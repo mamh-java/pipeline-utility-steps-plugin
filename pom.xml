@@ -34,8 +34,8 @@
     <artifactId>pipeline-utility-steps</artifactId>
     <packaging>hpi</packaging>
     <version>${revision}${changelist}</version>
-    <name>Pipeline Utility Steps</name>
-    <url>https://github.com/jenkinsci/pipeline-utility-steps-plugin</url>
+    <name>Pipeline: Utility Steps</name>
+    <url>https://github.com/mamh-java/pipeline-utility-steps-plugin.git</url>
 
     <licenses>
         <license>
@@ -58,7 +58,8 @@
     <properties>
         <revision>2.6.2</revision>
         <changelist>-SNAPSHOT</changelist>
-        <jenkins.version>2.121.2</jenkins.version>
+        <jenkins.version>2.249.3</jenkins.version>
+        <slf4jVersion>1.7.26</slf4jVersion>
         <java.level>8</java.level>
         <workflow-step-api.version>2.19</workflow-step-api.version>
         <spotbugs.effort>Max</spotbugs.effort>
@@ -182,9 +183,9 @@
     </build>
 
     <scm>
-        <connection>scm:git:git://github.com/jenkinsci/pipeline-utility-steps-plugin.git</connection>
-        <developerConnection>scm:git:git@github.com:jenkinsci/pipeline-utility-steps-plugin.git</developerConnection>
-        <url>https://github.com/jenkinsci/pipeline-utility-steps-plugin</url>
+        <connection>scm:git:https://github.com/mamh-java/pipeline-utility-steps-plugin.git</connection>
+        <developerConnection>scm:git:https://github.com/mamh-java/pipeline-utility-steps-plugin.git</developerConnection>
+        <url>https://github.com/mamh-java/pipeline-utility-steps-plugin</url>
         <tag>${scmTag}</tag>
     </scm>
 
