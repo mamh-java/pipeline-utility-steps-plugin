@@ -57,7 +57,7 @@
 
     <properties>
         <revision>2.6.2</revision>
-        <changelist>-SNAPSHOT</changelist>
+        <changelist></changelist>
         <jenkins.version>2.249.3</jenkins.version>
         <slf4jVersion>1.7.26</slf4jVersion>
         <java.level>8</java.level>
