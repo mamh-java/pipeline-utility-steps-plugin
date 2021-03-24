@@ -29,6 +29,7 @@ import hudson.model.TaskListener;
 import org.apache.commons.configuration2.AbstractConfiguration;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.ConfigurationConverter;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.pipeline.utility.steps.AbstractFileOrTextStepExecution;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
@@ -63,20 +64,22 @@ public class ReadPropertiesStepExecution extends AbstractFileOrTextStepExecution
         Properties properties = new Properties();
 
         if (step.getDefaults() != null) {
-        	properties.putAll(step.getDefaults());
+            properties.putAll(step.getDefaults());
         }
 
         if (!StringUtils.isBlank(step.getFile())) {
             FilePath f = ws.child(step.getFile());
             if (f.exists() && !f.isDirectory()) {
-                try(InputStream is = f.read()){
-                   properties.load(is);
+                try (InputStream is = f.read()) {
+                    String s = IOUtils.toString(is, "UTF-8");
+                    StringReader sr = new StringReader(s);
+                    properties.load(sr);
                 }
             } else if (f.isDirectory()) {
                 logger.print("warning: ");
                 logger.print(f.getRemote());
                 logger.println(" is a directory, omitting from properties gathering");
-            } else if(!f.exists()) {
+            } else if (!f.exists()) {
                 logger.print("warning: ");
                 logger.print(f.getRemote());
                 logger.println(" does not exist, omitting from properties gathering");
@@ -89,7 +92,7 @@ public class ReadPropertiesStepExecution extends AbstractFileOrTextStepExecution
         }
 
         // Check if we should interpolated values in the properties
-        if ( step.isInterpolate() ) {
+        if (step.isInterpolate()) {
             logger.println("Interpolation set to true, starting to parse the variable!");
             properties = interpolateProperties(properties);
         }
@@ -111,17 +114,18 @@ public class ReadPropertiesStepExecution extends AbstractFileOrTextStepExecution
         }
 
         for (Map.Entry e : (Set<Map.Entry>) src.entrySet()) {
-            dst.put(e.getKey() != null ? e.getKey().toString(): null, e.getValue());
+            dst.put(e.getKey() != null ? e.getKey().toString() : null, e.getValue());
         }
     }
 
     /**
      * Using commons collection to interpolated the values inside the properties
+     *
      * @param properties the list of properties to be interpolated
      * @return a new Properties object with the interpolated values
      */
     private Properties interpolateProperties(Properties properties) throws Exception {
-        if ( properties == null)
+        if (properties == null)
             return null;
         Configuration interpolatedProp;
         PrintStream logger = getLogger();
@@ -130,7 +134,7 @@ public class ReadPropertiesStepExecution extends AbstractFileOrTextStepExecution
             Configuration conf = ConfigurationConverter.getConfiguration(properties);
 
             // Apply interpolation
-            interpolatedProp = ((AbstractConfiguration)conf).interpolatedConfiguration();
+            interpolatedProp = ((AbstractConfiguration) conf).interpolatedConfiguration();
         } catch (Exception e) {
             logger.println("Got exception while interpolating the variables: " + e.getMessage());
             logger.println("Returning the original properties list!");
@@ -143,6 +147,7 @@ public class ReadPropertiesStepExecution extends AbstractFileOrTextStepExecution
 
     /**
      * Helper method to get the logger from the context.
+     *
      * @return the logger from the context.
      * @throws Exception
      */
