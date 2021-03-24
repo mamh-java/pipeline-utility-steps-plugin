@@ -1,0 +1,23 @@
+
+<p>
+    Write a xlsx file in the current working directory. That for example was previously read by <code>EasyExcel</code>.
+    See <a href="https://github.com/alibaba/easyexcel/blob/master/src/test/java/com/alibaba/easyexcel/test/demo/write/WriteTest.java">EasyExcel</a> for details.
+</p>
+<strong>Fields:</strong>
+<ul>
+    <li>
+        <code>records</code>:
+        列表，每个元素又是一个列表，类似一个二维数组,
+    </li>
+    <li>
+        <code>file</code>:
+        excel文件路径
+    </li>
+</ul>
+<p>
+    <strong>Example:</strong><br/>
+    <code><pre>
+def list = [['key', 'value'], ['a', 'b']]
+writeXlsx file: 'output.xlsx', records: list
+    </pre></code>
+</p>
