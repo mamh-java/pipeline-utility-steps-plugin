@@ -77,4 +77,79 @@
         assert read.isEmpty == false
         </pre>
     </code>
+    <strong>Example:</strong><br/>
+    <code>
+        <pre>
+
+class AClass {
+    int anInt = 1;
+    int[] intArray = [1,2,31,3,123,12,3,12];
+
+    Date d = new Date();
+
+    Boolean b = false;
+
+    long l = 12312312312;
+}
+
+class BClass {
+    Map<String, ?> aMap = new HashMap<String, Object>();
+    List<String> aList = new ArrayList();
+}
+class CClass {
+   AClass a = new AClass();
+   BClass b = new BClass();
+
+}
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Hello') {
+            steps {
+                script{
+Map  map = new HashMap();
+int[] intArray = [1,2,3];
+map.put("anInt", 1);
+map.put("anArray", intArray);
+
+acls = new AClass();
+bcls = new BClass();
+bcls.aMap.put("bInt", 11);
+bcls.aMap.put("bArray", intArray);
+bcls.aList.add("aaaa");
+bcls.aList.add("bbbb");
+bcls.aList.add("cccc");
+
+ccls = new CClass();
+ccls.b.aMap.put("bInt", 11111);
+ccls.b.aMap.put("bArray", intArray);
+ccls.b.aList.add("aaaaaaaa");
+ccls.b.aList.add("bbbbbbbb");
+ccls.b.aList.add("cccccccc");
+
+def amap = ['something': 'my datas',
+            'size': 3,
+            'isEmpty': false,
+            'map': map,
+            'AClass': acls,
+            'BClass': bcls,
+            'C': ccls
+            ]
+
+String t = writeToml returnText: true, toml: amap
+
+println t
+
+
+                }
+            }
+        }
+    }
+}
+
+        </pre>
+    </code>
+
 </p>
